@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Latihan Soal Setting Access Point TP-Link</title>
+<style>
+:root{--bg:#f6fbfb;--card:#fff;--ink:#2a3038;--mute:#5f6b76;--line:#d5e4e6;--a:#0b6a94;--a2:#13a9bb;--mint:#d2f5e8;--ok:#0e7a4f;--okbg:#dff5ea;--bad:#b3261e;--badbg:#fde8e6;--btn:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#10181c;--card:#182329;--ink:#e8eef0;--mute:#9fb0b8;--line:#2a3a42;--a:#59c3e6;--a2:#2fc4d4;--mint:#173a34;--ok:#6fe0ac;--okbg:#14382b;--bad:#ff9a92;--badbg:#42201d;--btn:#06232e}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#10181c;--card:#182329;--ink:#e8eef0;--mute:#9fb0b8;--line:#2a3a42;--a:#59c3e6;--a2:#2fc4d4;--mint:#173a34;--ok:#6fe0ac;--okbg:#14382b;--bad:#ff9a92;--badbg:#42201d;--btn:#06232e}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 Arial,Helvetica,"Liberation Sans",sans-serif}
+main{max-width:720px;margin:0 auto;padding:24px 16px 64px}
+h1{font-size:1.7rem;line-height:1.2;margin:8px 0 6px}
+h1 span{color:var(--a)}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:8px 0;z-index:5;font-size:.95rem;color:var(--mute);display:flex;justify-content:space-between;align-items:center}
+.bar i{display:block;height:6px;border-radius:3px;background:var(--line);flex:1;margin-left:12px;overflow:hidden}
+.bar b{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--a2),var(--a));transition:width .2s}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 14px 10px;margin:12px 0}
+.q p{margin:0 0 8px;font-weight:700}
+.q.ok{border-color:var(--ok)}.q.no{border-color:var(--bad)}
+label.o{display:flex;gap:10px;align-items:flex-start;padding:10px;margin:4px 0;border:1px solid var(--line);border-radius:8px;cursor:pointer;min-height:44px}
+label.o:has(input:checked){background:var(--mint);border-color:var(--a2)}
+label.o input{margin-top:4px;width:18px;height:18px;accent-color:var(--a)}
+.locked label.o{cursor:default}
+input[type=text]{width:100%;font:inherit;padding:11px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);min-height:44px}
+input:focus-visible,button:focus-visible,label.o:focus-within{outline:3px solid var(--a2);outline-offset:2px}
+button{font:inherit;font-weight:700;border:0;border-radius:10px;padding:14px 20px;min-height:48px;background:var(--a);color:var(--btn);cursor:pointer;width:100%}
+button:disabled{opacity:.6;cursor:default}
+button.g{background:transparent;color:var(--a);border:2px solid var(--a);margin-top:10px}
+.fb{margin:8px 0 2px;padding:8px 10px;border-radius:8px;font-size:.95rem}
+.fb.ok{background:var(--okbg);color:var(--ok)}.fb.no{background:var(--badbg);color:var(--bad)}
+#res{display:none;background:var(--card);border:2px solid var(--a2);border-radius:14px;padding:20px;margin:20px 0;text-align:center}
+#res .n{font-size:3.4rem;font-weight:700;line-height:1;color:var(--a)}
+#warn{color:var(--bad);min-height:1.5em;margin:10px 0 0;text-align:center}
+.st{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:16px 0}
+.st label.f{display:block;font-weight:700;margin:0 0 6px}
+.sub{color:var(--mute);margin:0 0 14px}
+</style>
+</head>
+<body>
+<main>
+<h1>Latihan Soal<br><span>Setting Access Point TP-Link</span></h1>
+<p class="sub">10 soal pilihan ganda. Nilai muncul setelah kamu selesai mengerjakan.</p>
+
+<form id="st" class="st">
+ <label class="f" for="nm">Nama kamu</label>
+ <input type="text" id="nm" maxlength="40" required autocomplete="name">
+ <button style="margin-top:16px">Mulai</button>
+</form>
+
+<div id="quiz" hidden>
+ <div class="bar"><span id="cnt"></span><i><b id="pg"></b></i></div>
+ <div id="app"></div>
+ <p id="warn" role="alert"></p>
+ <button id="go">Lihat nilai</button>
+</div>
+
+<section id="res" aria-live="polite"></section>
+</main>
+
+<script>
+// Bank soal: 10 soal. "a" = indeks jawaban benar (0 = A, 1 = B, dst.)
+const Q=[
+ {t:"Apa fungsi utama Access Point TP-Link?",o:["Menyediakan koneksi internet dari provider","Memancarkan Wi-Fi dari jaringan kabel yang sudah ada","Menyimpan data pengguna jaringan","Menggantikan fungsi modem sepenuhnya"],a:1},
+ {t:"Berikut ini yang BUKAN isi kemasan Access Point pada panduan ini adalah ...",o:["Antena (2 buah)","Adaptor daya","PoE injector","Kabel fiber optik"],a:3},
+ {t:"Lubang reset di panel belakang ditekan dengan peniti untuk ...",o:["Mematikan Wi-Fi sementara","Mengganti password Wi-Fi","Mengembalikan perangkat ke pengaturan pabrik","Memperbarui firmware"],a:2},
+ {t:"Alamat IP yang disarankan untuk membuka halaman admin adalah ...",o:["192.168.1.1","10.0.0.1","192.168.0.254","172.16.0.1"],a:2},
+ {t:"Mode operasi yang dipilih untuk pemakaian umum (rumah atau kantor) adalah ...",o:["Client","Access Point","Multi-SSID","Repeater/Bridge"],a:1},
+ {t:"Untuk memperluas jangkauan Wi-Fi yang sudah ada tanpa kabel tambahan, dipilih mode ...",o:["Access Point","Client","Repeater/Bridge","Multi-SSID"],a:2},
+ {t:"DHCP Server pada perangkat ini hanya berjalan jika LAN Type diatur ...",o:["Smart IP(DHCP)","Static IP","Auto","Bridge"],a:1},
+ {t:"Pengaturan keamanan Wi-Fi yang dianjurkan (selain WPA3) adalah ...",o:["WEP","Tanpa keamanan (Disable Wireless Security)","WPA2-PSK dengan enkripsi AES","WPA dengan enkripsi TKIP"],a:2},
+ {t:"Fungsi DNS adalah ...",o:["Membagikan alamat IP otomatis","Menerjemahkan nama situs menjadi alamat IP","Memancarkan sinyal Wi-Fi","Menyimpan firmware perangkat"],a:1},
+ {t:"Kafe yang ingin memisahkan jaringan staf dan tamu paling cocok memakai mode ...",o:["Client","Repeater/Bridge","Access Point","Multi-SSID"],a:3}
+];
+const N=Q.length,L="ABCD",$=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+let NAME="",done=false;
+
+$("#st").onsubmit=e=>{
+ e.preventDefault();NAME=$("#nm").value.trim();if(!NAME)return;
+ done=false;
+ $("#app").className="";
+ $("#app").innerHTML=Q.map((q,i)=>`<div class="q" id="q${i}"><p>${i+1}. ${esc(q.t)}</p>`+q.o.map((o,j)=>`<label class="o"><input type="radio" name="q${i}" value="${j}"><span>${L[j]}. ${esc(o)}</span></label>`).join("")+'<div class="r"></div></div>').join("");
+ $("#st").hidden=true;$("#quiz").hidden=false;$("#res").style.display="none";$("#go").disabled=false;$("#warn").textContent="";
+ count();scrollTo({top:0});
+};
+
+function count(){
+ const n=Q.filter((q,i)=>document.querySelector(`[name=q${i}]:checked`)).length;
+ $("#cnt").textContent=n+" / "+N+" terjawab";
+ $("#pg").style.width=(n/N*100)+"%";
+ return n;
+}
+$("#app").addEventListener("input",()=>{if(!done){count();$("#warn").textContent=""}});
+
+$("#go").onclick=()=>{
+ const left=N-count();
+ if(left&&!confirm(left+" soal belum dijawab dan dihitung salah. Lihat nilai sekarang?"))return;
+ done=true;$("#go").disabled=true;$("#app").className="locked";
+ let ok=0;
+ Q.forEach((q,i)=>{
+  const c=document.querySelector(`[name=q${i}]:checked`),el=$("#q"+i);
+  const right=c&&+c.value===q.a;
+  if(right)ok++;
+  el.className="q "+(right?"ok":"no");
+  el.querySelectorAll("input").forEach(x=>x.disabled=true);
+  el.querySelector(".r").innerHTML=`<div class="fb ${right?"ok":"no"}">${right?"Benar":(c?"Salah":"Belum dijawab")+". Jawaban yang benar: "+L[q.a]+". "+esc(q.o[q.a])}</div>`;
+ });
+ const pct=Math.round(ok/N*100);
+ const msg=pct>=80?"Sangat baik, pemahamanmu sudah kuat.":pct>=60?"Cukup baik. Baca ulang bagian yang masih salah.":"Perlu belajar lagi. Baca ulang panduannya lalu coba lagi.";
+ const r=$("#res");r.style.display="block";
+ r.innerHTML=`<div>Nilai ${esc(NAME)}</div><div class="n">${pct}</div><p>${ok} dari ${N} soal benar. ${msg}</p><button class="g" id="rs">Main lagi</button>`;
+ $("#rs").onclick=()=>{r.style.display="none";$("#quiz").hidden=true;$("#st").hidden=false;scrollTo({top:0})};
+ r.scrollIntoView({behavior:"smooth",block:"start"});
+};
+</script>
+</body>
+</html>
